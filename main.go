@@ -338,7 +338,7 @@ func GetTaxiTrips(db *sql.DB) {
 	// Get your geocoder.ApiKey from here :
 	// https://developers.google.com/maps/documentation/geocoding/get-api-key?authuser=2
 
-	geocoder.ApiKey = "ADD_YOUR_API_KEY_HERE"
+	geocoder.ApiKey = "AIzaSyAaiwWnOlcJbBnsGExuZNQGkSWNT_rCTz4"
 
 	drop_table := `drop table if exists taxi_trips`
 	_, err := db.Exec(drop_table)
@@ -372,7 +372,7 @@ func GetTaxiTrips(db *sql.DB) {
 
 	// Get the the Taxi Trips for Taxi medallions list
 
-	var url = "https://data.cityofchicago.org/resource/wrvz-psew.json?$limit=500"
+	var url = "https://data.cityofchicago.org/resource/wrvz-psew.json?$limit=10000"
 
 	tr := &http.Transport{
 		MaxIdleConns:          10,
