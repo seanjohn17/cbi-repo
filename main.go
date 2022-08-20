@@ -154,7 +154,7 @@ func main() {
 		// The following code snippets show you how to pull data from different data sources
 
 		go GetCommunityAreaUnemployment(db)
-		go GetBuildingPermits(db)
+		//go GetBuildingPermits(db)
 		//go GetTaxiTrips(db)
 		//go GetDailyCovid(db)
 
@@ -431,7 +431,7 @@ func GetCommunityAreaUnemployment(db *sql.DB) {
 	// This function is NOT complete
 	// It provides code-snippets for the data source: https://data.cityofchicago.org/Health-Human-Services/Public-Health-Statistics-Selected-public-health-in/iqnk-2tcu/data
 
-	drop_table := `drop table if exists community_area_unemployment`
+	drop_table := `drop table if exists unemployment`
 	_, err := db.Exec(drop_table)
 	if err != nil {
 		panic(err)
@@ -472,7 +472,7 @@ func GetCommunityAreaUnemployment(db *sql.DB) {
 		panic(err)
 	}
 
-	fmt.Println("Community Areas Unemplyment: Received data from SODA REST API for Unemployment")
+	fmt.Println("Community Areas Unemployment: Received data from SODA REST API for Unemployment")
 
 	body, _ := ioutil.ReadAll(res.Body)
 	var unemployment_data_list UnemploymentJsonRecords
@@ -780,8 +780,8 @@ func GetDailyCovid(db *sql.DB) {
 	fmt.Println("Completed Inserting Rows into the Daily COVID Data Table")
 }
 
-///////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
 func GetCCVIDetails(db *sql.DB) {
 
 	fmt.Println("ADD-YOUR-CODE-HERE - To Implement GetCCVIDetails")
