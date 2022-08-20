@@ -376,7 +376,7 @@ func GetTaxiTrips(db *sql.DB) {
 	
 	tr := &http.Transport{
 		MaxIdleConns:       10,
-		IdleConnTimeout:    500 * time.Second,
+		IdleConnTimeout:    30 * time.Second,
 		DisableCompression: true,
 	}
 
@@ -401,7 +401,7 @@ func GetTaxiTrips(db *sql.DB) {
 	
 	tr_2 := &http.Transport{
 		MaxIdleConns:       10,
-		IdleConnTimeout:    500 * time.Second,
+		IdleConnTimeout:    30 * time.Second,
 		DisableCompression: true,
 	}
 
@@ -600,7 +600,7 @@ func GetCommunityAreaUnemployment(db *sql.DB) {
 
 	tr := &http.Transport{
 		MaxIdleConns:       10,
-		IdleConnTimeout:    500 * time.Second,
+		IdleConnTimeout:    30 * time.Second,
 		DisableCompression: true,
 	}
 
@@ -841,7 +841,7 @@ func GetBuildingPermits(db *sql.DB) {
 
 	tr := &http.Transport{
 		MaxIdleConns:       10,
-		IdleConnTimeout:    500 * time.Second,
+		IdleConnTimeout:    30 * time.Second,
 		DisableCompression: true,
 	}
 
