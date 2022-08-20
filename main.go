@@ -368,7 +368,7 @@ func GetTaxiTrips(db *sql.DB) {
 	fmt.Println("Created Table for Taxi Trips")
 
 	// While doing unit-testing keep the limit value to 500
-	// later you could change it to 1000, 2000, 10,000, etc.
+	// later you could change it to 1000, 2000, 10,000, etc
 
 	// Get the the Taxi Trips for Taxi medallions list
 
