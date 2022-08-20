@@ -372,7 +372,7 @@ func GetTaxiTrips(db *sql.DB) {
 
 	// Get the the Taxi Trips for Taxi medallions list
 
-	var url = "https://data.cityofchicago.org/resource/wrvz-psew.json?$limit=5000"
+	var url = "https://data.cityofchicago.org/resource/wrvz-psew.json"
 	
 	tr := &http.Transport{
 		MaxIdleConns:          100,
@@ -404,7 +404,7 @@ func GetTaxiTrips(db *sql.DB) {
 
 	// Get the Taxi Trip list for rideshare companies like Uber/Lyft list
 	// Transportation-Network-Providers-Trips:
-	var url_2 = "https://data.cityofchicago.org/resource/m6dm-c72p.json?$limit=5000"
+	var url_2 = "https://data.cityofchicago.org/resource/m6dm-c72p.json"
 	
 	tr_2 := &http.Transport{
 		MaxIdleConns:       100,
@@ -811,7 +811,7 @@ func GetBuildingPermits(db *sql.DB) {
 
 	// While doing unit-testing keep the limit value to 500
 	// later you could change it to 1000, 2000, 10,000, etc.
-	var url = "https://data.cityofchicago.org/resource/building-permits.json?$limit=1000"
+	var url = "https://data.cityofchicago.org/resource/building-permits.json"
 
 	tr := &http.Transport{
 		MaxIdleConns:       100,
