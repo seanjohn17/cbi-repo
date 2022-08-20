@@ -375,15 +375,22 @@ func GetTaxiTrips(db *sql.DB) {
 	var url = "https://data.cityofchicago.org/resource/wrvz-psew.json?$limit=100"
 	
 	tr := &http.Transport{
-		MaxIdleConns:       10,
-		IdleConnTimeout:    30 * time.Second,
-		DisableCompression: true,
+		MaxIdleConns:          100,
+		IdleConnTimeout:       1000 * time.Second,
+		TLSHandshakeTimeout:   1000 * time.Second,
+		ExpectContinueTimeout: 1000 * time.Second,
+		DisableCompression:    true,
+		Dial: (&net.Dialer{
+			Timeout:   1000 * time.Second,
+			KeepAlive: 1000 * time.Second,
+		}).Dial,
+		ResponseHeaderTimeout: 1000 * time.Second,
 	}
 
 	client := &http.Client{Transport: tr}
 
 	res, err := client.Get(url)
-
+	
 	if err != nil {
 		panic(err)
 	}
@@ -401,7 +408,7 @@ func GetTaxiTrips(db *sql.DB) {
 	
 	tr_2 := &http.Transport{
 		MaxIdleConns:       10,
-		IdleConnTimeout:    30 * time.Second,
+		IdleConnTimeout:    300 * time.Second,
 		DisableCompression: true,
 	}
 
@@ -600,7 +607,7 @@ func GetCommunityAreaUnemployment(db *sql.DB) {
 
 	tr := &http.Transport{
 		MaxIdleConns:       10,
-		IdleConnTimeout:    30 * time.Second,
+		IdleConnTimeout:    300 * time.Second,
 		DisableCompression: true,
 	}
 
@@ -841,7 +848,7 @@ func GetBuildingPermits(db *sql.DB) {
 
 	tr := &http.Transport{
 		MaxIdleConns:       10,
-		IdleConnTimeout:    30 * time.Second,
+		IdleConnTimeout:    300 * time.Second,
 		DisableCompression: true,
 	}
 
