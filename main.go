@@ -472,7 +472,7 @@ func GetCommunityAreaUnemployment(db *sql.DB) {
 		panic(err)
 	}
 
-	fmt.Println("Community Areas Unemployment: Received data from SODA REST API for Unemployment")
+	fmt.Println("Received data from SODA REST API for Unemployment")
 
 	body, _ := ioutil.ReadAll(res.Body)
 	var unemployment_data_list UnemploymentJsonRecords
