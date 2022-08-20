@@ -421,7 +421,7 @@ func GetTaxiTrips(db *sql.DB) {
 
 	client_2 := &http.Client{Transport: tr_2}
 
-	res, err := client_2.Get(url_2)
+	res_2, err := client_2.Get(url_2)
 	
 	if err != nil {
 		panic(err)
