@@ -278,7 +278,7 @@ func main() {
 
 		go GetCommunityAreaUnemployment(db)
 		go GetBuildingPermits(db)
-		go GetTaxiTrips(db)
+		//go GetTaxiTrips(db)
 
 		// go GetCovidDetails(db)
 		// go GetCCVIDetails(db)
@@ -607,17 +607,16 @@ func GetCommunityAreaUnemployment(db *sql.DB) {
 	// So, set limit to 100.
 	var url = "https://data.cityofchicago.org/resource/iqnk-2tcu.json?$limit=100"
 
-	//	tr := &http.Transport{
-//		MaxIdleConns:       100,
-//		IdleConnTimeout:    300 * time.Second,
-//		DisableCompression: true,
-//	}
+	tr := &http.Transport{
+		MaxIdleConns:       100,
+		IdleConnTimeout:    300 * time.Second,
+		DisableCompression: true,
+	}
 
-//	client := &http.Client{Transport: tr}
+	client := &http.Client{Transport: tr}
 
-//	res, err := client.Get(url)
+	res, err := client.Get(url)
 	
-	res, err := http.Get(url)
 	if err != nil {
 		panic(err)
 	}
@@ -849,17 +848,16 @@ func GetBuildingPermits(db *sql.DB) {
 	// later you could change it to 1000, 2000, 10,000, etc.
 	var url = "https://data.cityofchicago.org/resource/building-permits.json?$limit=1000"
 
-//	tr := &http.Transport{
-//		MaxIdleConns:       100,
-//		IdleConnTimeout:    300 * time.Second,
-//		DisableCompression: true,
-//	}
+	tr := &http.Transport{
+		MaxIdleConns:       100,
+		IdleConnTimeout:    300 * time.Second,
+		DisableCompression: true,
+	}
 
-//	client := &http.Client{Transport: tr}
+	client := &http.Client{Transport: tr}
 
-//	res, err := client.Get(url)
+	res, err := client.Get(url)
 	
-	res, err := http.Get(url)
 	if err != nil {
 		panic(err)
 	}
