@@ -278,7 +278,7 @@ func main() {
 
 		go GetCommunityAreaUnemployment(db)
 		go GetBuildingPermits(db)
-		//go GetTaxiTrips(db)
+		go GetTaxiTrips(db)
 
 		// go GetCovidDetails(db)
 		// go GetCCVIDetails(db)
@@ -406,17 +406,15 @@ func GetTaxiTrips(db *sql.DB) {
 	// Transportation-Network-Providers-Trips:
 	var url_2 = "https://data.cityofchicago.org/resource/m6dm-c72p.json?$limit=100"
 	
-//	tr_2 := &http.Transport{
-//		MaxIdleConns:       100,
-//		IdleConnTimeout:    300 * time.Second,
-//		DisableCompression: true,
-//	}
+	tr_2 := &http.Transport{
+		MaxIdleConns:       100,
+		IdleConnTimeout:    300 * time.Second,
+		DisableCompression: true,
+	}
 
-//	client_2 := &http.Client{Transport: tr_2}
+	client_2 := &http.Client{Transport: tr_2}
 
-//	res_2, err := client_2.Get(url_2)
-
-	res_2, err := http.Get(url_2)
+	res_2, err := client_2.Get(url_2)
 	
 	if err != nil {
 		panic(err)
