@@ -374,7 +374,16 @@ func GetTaxiTrips(db *sql.DB) {
 
 	var url = "https://data.cityofchicago.org/resource/wrvz-psew.json?$limit=100"
 	
-	res, err := http.Get(url)
+	tr := &http.Transport{
+		MaxIdleConns:       10,
+		IdleConnTimeout:    300 * time.Second,
+		DisableCompression: true,
+	}
+
+	client := &http.Client{Transport: tr}
+
+	res, err := client.Get(url)
+
 	if err != nil {
 		panic(err)
 	}
@@ -390,7 +399,16 @@ func GetTaxiTrips(db *sql.DB) {
 	// Transportation-Network-Providers-Trips:
 	var url_2 = "https://data.cityofchicago.org/resource/m6dm-c72p.json?$limit=100"
 	
-	res_2, err := http.Get(url_2)
+	tr_2 := &http.Transport{
+		MaxIdleConns:       10,
+		IdleConnTimeout:    300 * time.Second,
+		DisableCompression: true,
+	}
+
+	client_2 := &http.Client{Transport: tr_2}
+
+	res_2, err := client_2.Get(url_2)
+
 	if err != nil {
 		panic(err)
 	}
