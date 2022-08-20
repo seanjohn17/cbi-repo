@@ -692,7 +692,7 @@ func GetDailyCovid(db *sql.DB) {
 
 	create_table := `CREATE TABLE IF NOT EXISTS "daily_covid" (
 						"id"   SERIAL , 
-						"date" VARCHAR(255) UNIQUE,
+						"date" VARCHAR(255),
 						"cases_total" VARCHAR(255), 
 						"deaths_total" VARCHAR(255), 
 						"hospitalizations_total" VARCHAR(255),  
