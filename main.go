@@ -372,10 +372,10 @@ func GetTaxiTrips(db *sql.DB) {
 
 	// Get the the Taxi Trips for Taxi medallions list
 
-	var url = "https://data.cityofchicago.org/resource/wrvz-psew.json?$limit=500"
+	var url = "https://data.cityofchicago.org/resource/wrvz-psew.json?$limit=100"
 	
 	tr := &http.Transport{
-		MaxIdleConns:          100,
+		MaxIdleConns:          10,
 		IdleConnTimeout:       1000 * time.Second,
 		TLSHandshakeTimeout:   1000 * time.Second,
 		ExpectContinueTimeout: 1000 * time.Second,
@@ -404,10 +404,10 @@ func GetTaxiTrips(db *sql.DB) {
 
 	// Get the Taxi Trip list for rideshare companies like Uber/Lyft list
 	// Transportation-Network-Providers-Trips:
-	var url_2 = "https://data.cityofchicago.org/resource/m6dm-c72p.json?$limit=500"
+	var url_2 = "https://data.cityofchicago.org/resource/m6dm-c72p.json?$limit=100"
 	
 	tr_2 := &http.Transport{
-		MaxIdleConns:       100,
+		MaxIdleConns:       10,
 		IdleConnTimeout:    300 * time.Second,
 		DisableCompression: true,
 	}
@@ -606,7 +606,7 @@ func GetCommunityAreaUnemployment(db *sql.DB) {
 	var url = "https://data.cityofchicago.org/resource/iqnk-2tcu.json?$limit=100"
 
 	tr := &http.Transport{
-		MaxIdleConns:       100,
+		MaxIdleConns:       10,
 		IdleConnTimeout:    300 * time.Second,
 		DisableCompression: true,
 	}
@@ -814,7 +814,7 @@ func GetBuildingPermits(db *sql.DB) {
 	var url = "https://data.cityofchicago.org/resource/building-permits.json?$limit=500"
 
 	tr := &http.Transport{
-		MaxIdleConns:       100,
+		MaxIdleConns:       10,
 		IdleConnTimeout:    300 * time.Second,
 		DisableCompression: true,
 	}
