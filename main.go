@@ -63,7 +63,7 @@ type DailyCovidJsonRecords []struct {
 	Hospitalizations_total         string `json:"hospitalizations_total"`
 }
 
-type CovidJsonRecords []struct {
+type CovidLocationJsonRecords []struct {
 	Zip_code                           string `json:"zip_code"`
 	Week_number                        string `json:"week_number"`
 	Week_start                         string `json:"week_start"`
@@ -153,12 +153,12 @@ func main() {
 		// build and fine-tune the functions to pull data from the different data sources
 		// The following code snippets show you how to pull data from different data sources
 
-		go GetCommunityAreaUnemployment(db)
-		go GetBuildingPermits(db)
-		go GetTaxiTrips(db)
-		go GetDailyCovid(db)
-
-		// go GetCCVIDetails(db)
+		//go GetCommunityAreaUnemployment(db)
+		//go GetBuildingPermits(db)
+		//go GetTaxiTrips(db)
+		//go GetDailyCovid(db)
+		go GetCCVIDetails(db)
+		go GetCovidLocation(db)
 
 		http.HandleFunc("/", handler)
 
@@ -781,9 +781,294 @@ func GetDailyCovid(db *sql.DB) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
+
+type CovidLocationJsonRecords []struct {
+	Zip_code                           string `json:"zip_code"`
+	Week_number                        string `json:"week_number"`
+	Week_start                         string `json:"week_start"`
+	Week_end                           string `json:"week_end"`
+	Cases_weekly                       string `json:"cases_weekly"`
+	Cases_cumulative                   string `json:"cases_cumulative"`
+	Case_rate_weekly                   string `json:"case_rate_weekly"`
+	Case_rate_cumulative               string `json:"case_rate_cumulative"`
+	Percent_tested_positive_weekly     string `json:"percent_tested_positive_weekly"`
+	Percent_tested_positive_cumulative string `json:"percent_tested_positive_cumulative"`
+	Population                         string `json:"population"`
+}
+
 ////////////////////////////////////////////////////////////////////////////////////
 func GetCCVIDetails(db *sql.DB) {
 
-	fmt.Println("ADD-YOUR-CODE-HERE - To Implement GetCCVIDetails")
+	fmt.Println("GetCCVIDetails: Collecting CCVI Data")
+
+	// This function is NOT complete
+	// It provides code-snippets for the data source: https://data.cityofchicago.org/Health-Human-Services/Chicago-COVID-19-Community-Vulnerability-Index-CCV/xhc6-88s9/data
+
+	// Data Collection needed from data source:
+	// https://data.cityofchicago.org/Health-Human-Services/Chicago-COVID-19-Community-Vulnerability-Index-CCV/xhc6-88s9
+
+	drop_table := `drop table if exists CCVI`
+	_, err := db.Exec(drop_table)
+	if err != nil {
+		panic(err)
+	}
+
+	create_table := `CREATE TABLE IF NOT EXISTS "CCVI" (
+						"id"   SERIAL , 
+						"geography_type" VARCHAR(255),
+						"community_area_or_zip_code" VARCHAR(255), 
+						"community_area_name" VARCHAR(255), 
+						"ccvi_score" VARCHAR(255),  
+						"ccvi_category" VARCHAR(255),
+						PRIMARY KEY ("id") 
+					);`
+
+	_, _err := db.Exec(create_table)
+	if _err != nil {
+		panic(_err)
+	}
+
+	fmt.Println("Created Table for CCVI Data")
+
+	// While doing unit-testing keep the limit value to 500
+	// later you could change it to 1000, 2000, 10,000, etc.
+	var url = "https://data.cityofchicago.org/resource/xhc6-88s9.json?$limit=500"
+
+	tr := &http.Transport{
+		MaxIdleConns:       10,
+		IdleConnTimeout:    300 * time.Second,
+		DisableCompression: true,
+	}
+
+	client := &http.Client{Transport: tr}
+
+	res, err := client.Get(url)
+	
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println("Received data from SODA REST API for CCVI Data")
+
+	body, _ := ioutil.ReadAll(res.Body)
+	var ccvi_data_list CCVIJsonRecords
+	json.Unmarshal(body, &ccvi_data_list)
+
+	s := fmt.Sprintf("\n\n CCVI Data: number of SODA records received = %d\n\n", len(ccvi_data_list))
+	io.WriteString(os.Stdout, s)
+
+	for i := 0; i < len(ccvi_data_list); i++ {
+
+		// We will execute defensive coding to check for messy/dirty/missing data values
+		// There are different methods to deal with messy/dirty/missing data.
+		// We will use the simplest method: drop records that have messy/dirty/missing data
+		// Any record that has messy/dirty/missing data we don't enter it in the data lake/table
+
+		geography_type := ccvi_data_list[i].Geography_type
+		if geography_type == "" {
+			continue
+		}
+		
+		community_area_or_zip_code := ccvi_data_list[i].Community_area_or_ZIP_code
+		if community_area_or_zip_code == "" {
+			continue
+		}
+		
+		community_area_name := ccvi_data_list[i].Community_name
+
+		ccvi_score := ccvi_data_list[i].CCVI_score
+		if ccvi_score == "" {
+			continue
+		}
+
+		ccvi_category:= ccvi_data_list[i].CCVI_category
+		if ccvi_category == "" {
+			continue
+		}
+
+
+		sql := `INSERT INTO CCVI ("geography_type", "community_area_or_zip_code", "community_area_name", "ccvi_score", "ccvi_category")
+		values($1, $2, $3, $4, $5)`
+
+		_, err = db.Exec(
+			sql,
+			geography_type,
+			community_area_or_zip_code,
+			community_area_name,
+			ccvi_score,
+			ccvi_category)
+
+		if err != nil {
+			panic(err)
+		}
+
+	}
+
+	fmt.Println("Completed Inserting Rows into the CCVI Data Table")
+	
+}
+
+////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
+func GetCovidLocation(db *sql.DB) {
+
+	fmt.Println("GetCovidLocation: Collecting COVID Location Data")
+
+	// This function is NOT complete
+	// It provides code-snippets for the data source: https://data.cityofchicago.org/Health-Human-Services/COVID-19-Cases-Tests-and-Deaths-by-ZIP-Code/yhhz-zm2v/data
+
+	// Data Collection needed from data source:
+	// https://data.cityofchicago.org/Health-Human-Services/COVID-19-Cases-Tests-and-Deaths-by-ZIP-Code/yhhz-zm2v
+
+	drop_table := `drop table if exists covid_location`
+	_, err := db.Exec(drop_table)
+	if err != nil {
+		panic(err)
+	}
+
+	create_table := `CREATE TABLE IF NOT EXISTS "covid_location" (
+						"id"   				SERIAL , 
+						"zip_code" 			VARCHAR(255),
+						"week_number" 			VARCHAR(255), 
+						"week_start" 			VARCHAR(255), 
+						"week_end" 			VARCHAR(255),  
+						"cases_weekly" 			VARCHAR(255),
+						"cases_cumulative" 		VARCHAR(255),
+						"case_rate_weekly" 		VARCHAR(255),
+						"case_rate_cumulative" 		VARCHAR(255),
+						"percent_tested_positive_weekly" VARCHAR(255),
+						"percent_tested_positive_cumulative" VARCHAR(255),
+						"population" 			VARCHAR(255),
+						PRIMARY KEY ("id") 
+					);`
+
+	_, _err := db.Exec(create_table)
+	if _err != nil {
+		panic(_err)
+	}
+
+	fmt.Println("Created Table for Covid Location Data")
+
+	// While doing unit-testing keep the limit value to 500
+	// later you could change it to 1000, 2000, 10,000, etc.	
+	var url = "https://data.cityofchicago.org/resource/yhhz-zm2v.json?$limit=500"
+
+
+	tr := &http.Transport{
+		MaxIdleConns:       10,
+		IdleConnTimeout:    300 * time.Second,
+		DisableCompression: true,
+	}
+
+	client := &http.Client{Transport: tr}
+
+	res, err := client.Get(url)
+	
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println("Received data from SODA REST API for Covid Location Data")
+
+	body, _ := ioutil.ReadAll(res.Body)
+	var covid_location_data_list CovidLocationJsonRecords
+	json.Unmarshal(body, &covid_location_data_list)
+
+	s := fmt.Sprintf("\n\n COVID Location Data: number of SODA records received = %d\n\n", len(covid_location_data_list))
+	io.WriteString(os.Stdout, s)
+
+	for i := 0; i < len(covid_location_data_list); i++ {
+
+		// We will execute defensive coding to check for messy/dirty/missing data values
+		// There are different methods to deal with messy/dirty/missing data.
+		// We will use the simplest method: drop records that have messy/dirty/missing data
+		// Any record that has messy/dirty/missing data we don't enter it in the data lake/table
+
+		zip_code := covid_location_data_list[i].Zip_code
+		if zip_code == "" {
+			continue
+		}
+		
+		week_number := covid_location_data_list[i].Week_number
+		if week_number == "" {
+			continue
+		}
+		
+		week_start := covid_location_data_list[i].Week_start
+		if week_start == "" {
+			continue
+		}
+
+		week_end := covid_location_data_list[i].Week_end
+		if week_end == "" {
+			continue
+		}
+
+		cases_weekly:= covid_location_data_list[i].Cases_weekly
+		if cases_weekly == "" {
+			continue
+		}
+
+		cases_cumulative:= covid_location_data_list[i].Cases_cumulative
+		if cases_cumulative == "" {
+			continue
+		}
+
+		case_rate_weekly:= covid_location_data_list[i].Case_rate_weekly
+		if case_rate_weekly == "" {
+			continue
+		}
+
+		case_rate_cumulative:= covid_location_data_list[i].Case_rate_cumulative
+		if case_rate_cumulative == "" {
+			continue
+		}
+
+		percent_tested_positive_weekly:= covid_location_data_list[i].Percent_tested_positive_weekly
+		if percent_tested_positive_weekly == "" {
+			continue
+		}
+
+		percent_tested_positive_cumulative:= covid_location_data_list[i].Percent_tested_positive_cumulative
+		if percent_tested_positive_cumulative == "" {
+			continue
+		}
+
+		population:= covid_location_data_list[i].Population
+		if population == "" {
+			continue
+		}
+
+
+		sql := `INSERT INTO covid_location ("zip_code", "week_number", "week_start", "week_end", "cases_weekly",
+						    "cases_cumulative",
+						    "case_rate_weekly",
+						    "case_rate_cumulative",
+						    "percent_tested_positive_weekly",
+						    "percent_tested_positive_cumulative",
+						    "population")
+		values($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`
+
+		_, err = db.Exec(
+			sql,
+			zip_code,
+			week_number,
+			week_start,
+			week_end,
+			cases_weekly,
+			cases_cumulative,
+			case_rate_weekly,
+			case_rate_cumulative,
+			percent_tested_positive_weekly,
+			percent_tested_positive_cumulative,
+			population)
+
+		if err != nil {
+			panic(err)
+		}
+
+	}
+
+	fmt.Println("Completed Inserting Rows into the COVID Location Data Table")
 	
 }
