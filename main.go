@@ -376,9 +376,7 @@ func GetTaxiTrips(db *sql.DB) {
 		}
 
 		// Comment the following line while not unit-testing
-		if i % 100 == 0 {
-			fmt.Println(pickup_location)
-		}
+		fmt.Println(pickup_location)
 
 		pickup_address_list, _ := geocoder.GeocodingReverse(pickup_location)
 		pickup_address := pickup_address_list[0]
