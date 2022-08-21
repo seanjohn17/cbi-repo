@@ -792,7 +792,7 @@ func GetCCVIDetails(db *sql.DB) {
 	// Data Collection needed from data source:
 	// https://data.cityofchicago.org/Health-Human-Services/Chicago-COVID-19-Community-Vulnerability-Index-CCV/xhc6-88s9
 
-	drop_table := `drop table if exists CCVI`
+	drop_table := `drop table if exists ccvi_data`
 	_, err := db.Exec(drop_table)
 	if err != nil {
 		panic(err)
