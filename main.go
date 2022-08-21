@@ -631,19 +631,14 @@ func GetBuildingPermits(db *sql.DB) {
 
 		community_area:= building_data_list[i].Community_area
 		
-		//if community_area == "" {
-		// 	continue
-		//} 
+		community_area:= building_data_list[i].Community_area
+		if community_area == "" {
+		 	continue
+		} 
 
 		latitude:= building_data_list[i].Latitude
-		if latitude == "" {
-			continue
-		}
-
-		longitude:= building_data_list[i].Longitude
-		if longitude == "" {
-			continue
-		}		
+		
+		longitude:= building_data_list[i].Longitude		
 		
 
 		sql := `INSERT INTO building_permits ("permit_id", "permit_code", "permit_type",
