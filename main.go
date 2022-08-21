@@ -153,10 +153,10 @@ func main() {
 		// build and fine-tune the functions to pull data from the different data sources
 		// The following code snippets show you how to pull data from different data sources
 
-		//go GetCommunityAreaUnemployment(db)
-		//go GetBuildingPermits(db)
-		//go GetTaxiTrips(db)
-		//go GetDailyCovid(db)
+		go GetCommunityAreaUnemployment(db)
+		go GetBuildingPermits(db)
+		go GetTaxiTrips(db)
+		go GetDailyCovid(db)
 		go GetCCVIDetails(db)
 		go GetCovidLocation(db)
 
@@ -815,9 +815,9 @@ func GetCCVIDetails(db *sql.DB) {
 
 	fmt.Println("Created Table for CCVI Data")
 
-	// While doing unit-testing keep the limit value to 500
-	// later you could change it to 1000, 2000, 10,000, etc.
-	var url = "https://data.cityofchicago.org/resource/xhc6-88s9.json?$limit=500"
+	// There are 135 records in the data set
+	// So, set limit to 200.
+	var url = "https://data.cityofchicago.org/resource/xhc6-88s9.json?$limit=200"
 
 	tr := &http.Transport{
 		MaxIdleConns:       10,
