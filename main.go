@@ -797,8 +797,14 @@ func GetCCVIDetails(db *sql.DB) {
 	if err != nil {
 		panic(err)
 	}
+	
+	drop_table := `drop table if exists ccvi_data`
+	_, err := db.Exec(drop_table)
+	if err != nil {
+		panic(err)
+	}
 
-	create_table := `CREATE TABLE IF NOT EXISTS "CCVI" (
+	create_table := `CREATE TABLE IF NOT EXISTS "ccvi_data" (
 						"id"   SERIAL , 
 						"geography_type" VARCHAR(255),
 						"community_area_or_zip_code" VARCHAR(255), 
@@ -872,7 +878,7 @@ func GetCCVIDetails(db *sql.DB) {
 		}
 
 
-		sql := `INSERT INTO CCVI ("geography_type", "community_area_or_zip_code", "community_area_name", "ccvi_score", "ccvi_category")
+		sql := `INSERT INTO ccvi_data ("geography_type", "community_area_or_zip_code", "community_area_name", "ccvi_score", "ccvi_category")
 		values($1, $2, $3, $4, $5)`
 
 		_, err = db.Exec(
