@@ -630,8 +630,6 @@ func GetBuildingPermits(db *sql.DB) {
 		}
 
 		community_area:= building_data_list[i].Community_area
-		
-		community_area:= building_data_list[i].Community_area
 		if community_area == "" {
 		 	continue
 		} 
