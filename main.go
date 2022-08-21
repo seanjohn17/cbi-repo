@@ -797,12 +797,6 @@ func GetCCVIDetails(db *sql.DB) {
 	if err != nil {
 		panic(err)
 	}
-	
-	drop_table := `drop table if exists ccvi_data`
-	_, err := db.Exec(drop_table)
-	if err != nil {
-		panic(err)
-	}
 
 	create_table := `CREATE TABLE IF NOT EXISTS "ccvi_data" (
 						"id"   SERIAL , 
