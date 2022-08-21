@@ -150,12 +150,12 @@ func main() {
 		// build and fine-tune the functions to pull data from the different data sources
 		// The following code snippets show you how to pull data from different data sources
 
-		//go GetCommunityAreaUnemployment(db)
-		//go GetBuildingPermits(db)
-		go GetTaxiTrips(db)
-		//go GetDailyCovid(db)
-		//go GetCCVIDetails(db)
-		//go GetCovidLocation(db)
+		go GetCommunityAreaUnemployment(db)
+		go GetBuildingPermits(db)
+		//go GetTaxiTrips(db)
+		go GetDailyCovid(db)
+		go GetCCVIDetails(db)
+		go GetCovidLocation(db)
 
 		http.HandleFunc("/", handler)
 
@@ -376,7 +376,9 @@ func GetTaxiTrips(db *sql.DB) {
 		}
 
 		// Comment the following line while not unit-testing
-		//fmt.Println(pickup_location)
+		if i % 100 == 0 {
+			fmt.Println(pickup_location)
+		}
 
 		pickup_address_list, _ := geocoder.GeocodingReverse(pickup_location)
 		pickup_address := pickup_address_list[0]
