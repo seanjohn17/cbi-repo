@@ -917,7 +917,7 @@ func GetCovidLocation(db *sql.DB) {
 
 	// There are 7680 dates in the data set
 	// So, set limit to 8000.	
-	//var url = "https://data.cityofchicago.org/resource/yhhz-zm2v.json?$limit=8000"
+	var url = "https://data.cityofchicago.org/resource/yhhz-zm2v.json?$limit=8000"
 
 
 	tr := &http.Transport{
