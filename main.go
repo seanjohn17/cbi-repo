@@ -781,21 +781,6 @@ func GetDailyCovid(db *sql.DB) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
-
-type CovidLocationJsonRecords []struct {
-	Zip_code                           string `json:"zip_code"`
-	Week_number                        string `json:"week_number"`
-	Week_start                         string `json:"week_start"`
-	Week_end                           string `json:"week_end"`
-	Cases_weekly                       string `json:"cases_weekly"`
-	Cases_cumulative                   string `json:"cases_cumulative"`
-	Case_rate_weekly                   string `json:"case_rate_weekly"`
-	Case_rate_cumulative               string `json:"case_rate_cumulative"`
-	Percent_tested_positive_weekly     string `json:"percent_tested_positive_weekly"`
-	Percent_tested_positive_cumulative string `json:"percent_tested_positive_cumulative"`
-	Population                         string `json:"population"`
-}
-
 ////////////////////////////////////////////////////////////////////////////////////
 func GetCCVIDetails(db *sql.DB) {
 
