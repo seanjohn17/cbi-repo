@@ -51,9 +51,6 @@ type BuildingPermitsJsonRecords []struct {
 	Permit_type   			   string `json:"permit_type"`
 	Total_fee       				   string `json:"total_fee"`
 	Community_area             string `json:"community_area"`
-	Latitude   			   string `json:"latitude"`
-	Longitude             string `json:"longitude"`
-
 }
 
 type DailyCovidJsonRecords []struct {
@@ -563,8 +560,6 @@ func GetBuildingPermits(db *sql.DB) {
 						"permit_type" VARCHAR(255),  
 						"total_fee"      VARCHAR(255), 
 						"community_area"      VARCHAR(255), 
-						"latitude"      DOUBLE PRECISION ,
-						"longitude"      DOUBLE PRECISION,
 						PRIMARY KEY ("id") 
 					);`
 
@@ -633,18 +628,12 @@ func GetBuildingPermits(db *sql.DB) {
 		if community_area == "" {
 		 	continue
 		} 
-
-		latitude:= building_data_list[i].Latitude
-		
-		longitude:= building_data_list[i].Longitude		
 		
 
 		sql := `INSERT INTO building_permits ("permit_id", "permit_code", "permit_type",
 		"total_fee",
-		"community_area",
-		"latitude",
-		"longitude" )
-		values($1, $2, $3, $4, $5, $6, $7)`
+		"community_area")
+		values($1, $2, $3, $4, $5)`
 
 		_, err = db.Exec(
 			sql,
@@ -652,9 +641,7 @@ func GetBuildingPermits(db *sql.DB) {
 			permit_code,
 			permit_type,
 			total_fee,
-			community_area,
-			latitude,
-			longitude)
+			community_area)
 
 		if err != nil {
 			panic(err)
