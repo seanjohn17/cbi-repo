@@ -246,7 +246,7 @@ func GetTaxiTrips(db *sql.DB) {
 
 	// Get the the Taxi Trips for Taxi medallions list
 
-	var url = "https://data.cityofchicago.org/resource/wrvz-psew.json?$limit=100"
+	var url = "https://data.cityofchicago.org/resource/wrvz-psew.json?$limit=500"
 	
 	tr := &http.Transport{
 		MaxIdleConns:          10,
@@ -274,11 +274,14 @@ func GetTaxiTrips(db *sql.DB) {
 	body_1, _ := ioutil.ReadAll(res.Body)
 	var taxi_trips_list_1 TaxiTripsJsonRecords
 	json.Unmarshal(body_1, &taxi_trips_list_1)
+	
+	s1 := fmt.Sprintf("\n\n Taxi-Trips number of SODA records received = %d\n\n", len(taxi_trips_list_1))
+	io.WriteString(os.Stdout, s1)
 
 
 	// Get the Taxi Trip list for rideshare companies like Uber/Lyft list
 	// Transportation-Network-Providers-Trips:
-	var url_2 = "https://data.cityofchicago.org/resource/m6dm-c72p.json?$limit=100"
+	var url_2 = "https://data.cityofchicago.org/resource/m6dm-c72p.json?$limit=500"
 	
 	tr_2 := &http.Transport{
 		MaxIdleConns:       10,
@@ -300,8 +303,8 @@ func GetTaxiTrips(db *sql.DB) {
 	var taxi_trips_list_2 TaxiTripsJsonRecords
 	json.Unmarshal(body_2, &taxi_trips_list_2)
 
-	s := fmt.Sprintf("\n\n Transportation-Network-Providers-Trips number of SODA records received = %d\n\n", len(taxi_trips_list_2))
-	io.WriteString(os.Stdout, s)
+	s2 := fmt.Sprintf("\n\n Transportation-Network-Providers-Trips number of SODA records received = %d\n\n", len(taxi_trips_list_2))
+	io.WriteString(os.Stdout, s2)
 
 
 	// Add the Taxi medallions list & rideshare companies like Uber/Lyft list
