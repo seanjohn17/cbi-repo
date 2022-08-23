@@ -376,12 +376,14 @@ func GetTaxiTrips(db *sql.DB) {
 		}
 
 		// Comment the following line while not unit-testing
-		fmt.Println(pickup_location)
-
+		//fmt.Println(pickup_location)
+		
 		pickup_address_list, _ := geocoder.GeocodingReverse(pickup_location)
 		pickup_address := pickup_address_list[0]
 		pickup_zip_code := pickup_address.PostalCode
 
+		fmt.Printf("Latitude: %f Longitude: %f Address: %f",pickup_centroid_latitude_float,pickup_centroid_longitude_float,pickup_address)
+		
 		// Using dropoff_centroid_latitude and dropoff_centroid_longitude in geocoder.GeocodingReverse
 		// we could find the dropoff zip-code
 
