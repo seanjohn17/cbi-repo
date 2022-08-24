@@ -282,7 +282,7 @@ func GetTaxiTrips(db *sql.DB) {
 
 	// Get the Taxi Trip list for rideshare companies like Uber/Lyft list
 	// Transportation-Network-Providers-Trips:
-	var url_2 = "https://data.cityofchicago.org/resource/m6dm-c72p.json?$limit=10000"
+	var url_2 = "https://data.cityofchicago.org/resource/m6dm-c72p.json?$limit=100"
 	
 	tr_2 := &http.Transport{
 		MaxIdleConns:       10,
@@ -399,6 +399,10 @@ func GetTaxiTrips(db *sql.DB) {
 		dropoff_address := dropoff_address_list[0]
 		dropoff_zip_code := dropoff_address.PostalCode
 
+		if pickup_zip_code == "" {
+			continue
+		}
+		
 		if dropoff_zip_code == "" {
 			continue
 		}
