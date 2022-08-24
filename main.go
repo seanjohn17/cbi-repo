@@ -399,11 +399,11 @@ func GetTaxiTrips(db *sql.DB) {
 		dropoff_address := dropoff_address_list[0]
 		dropoff_zip_code := dropoff_address.PostalCode
 
-		if pickup_zip_code == "" {
+		if pickup_zip_code != "" {
 			continue
 		}
 		
-		if dropoff_zip_code == "" {
+		if dropoff_zip_code != "" {
 			continue
 		}
 		
