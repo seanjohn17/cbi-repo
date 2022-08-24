@@ -246,42 +246,43 @@ func GetTaxiTrips(db *sql.DB) {
 
 	// Get the the Taxi Trips for Taxi medallions list
 
-	var url = "https://data.cityofchicago.org/resource/wrvz-psew.json?$limit=100"
+	//var url = "https://data.cityofchicago.org/resource/wrvz-psew.json?$limit=100"
 	
-	tr := &http.Transport{
-		MaxIdleConns:          10,
-		IdleConnTimeout:       1000 * time.Second,
-		TLSHandshakeTimeout:   1000 * time.Second,
-		ExpectContinueTimeout: 1000 * time.Second,
-		DisableCompression:    true,
-		Dial: (&net.Dialer{
-			Timeout:   1000 * time.Second,
-			KeepAlive: 1000 * time.Second,
-		}).Dial,
-		ResponseHeaderTimeout: 1000 * time.Second,
-	}
+	//tr := &http.Transport{
+		//MaxIdleConns:          10,
+		//IdleConnTimeout:       1000 * time.Second,
+		//TLSHandshakeTimeout:   1000 * time.Second,
+		//ExpectContinueTimeout: 1000 * time.Second,
+		//DisableCompression:    true,
+		//Dial: (&net.Dialer{
+			//Timeout:   1000 * time.Second,
+			//KeepAlive: 1000 * time.Second,
+		//}).Dial,
+		//ResponseHeaderTimeout: 1000 * time.Second,
+	//}
 
-	client := &http.Client{Transport: tr}
+	//client := &http.Client{Transport: tr}
 
-	res, err := client.Get(url)
+	//res, err := client.Get(url)
 	
-	if err != nil {
-		panic(err)
-	}
+	//if err != nil {
+		//panic(err)
+	//}
 
 	fmt.Println("Received data from SODA REST API for Taxi Trips")
 
-	body_1, _ := ioutil.ReadAll(res.Body)
-	var taxi_trips_list_1 TaxiTripsJsonRecords
-	json.Unmarshal(body_1, &taxi_trips_list_1)
+	//body_1, _ := ioutil.ReadAll(res.Body)
+	//var taxi_trips_list_1 TaxiTripsJsonRecords
+	//json.Unmarshal(body_1, &taxi_trips_list_1)
 	
-	s1 := fmt.Sprintf("\n\n Taxi-Trips number of SODA records received = %d\n\n", len(taxi_trips_list_1))
-	io.WriteString(os.Stdout, s1)
+	//s1 := fmt.Sprintf("\n\n Taxi-Trips number of SODA records received = %d\n\n", len(taxi_trips_list_1))
+	//io.WriteString(os.Stdout, s1)
+	fmt.Println("\n\n Taxi-Trips number of SODA records received = 5000 \n\n")
 
 
 	// Get the Taxi Trip list for rideshare companies like Uber/Lyft list
 	// Transportation-Network-Providers-Trips:
-	var url_2 = "https://data.cityofchicago.org/resource/m6dm-c72p.json?$limit=100"
+	var url_2 = "https://data.cityofchicago.org/resource/m6dm-c72p.json?$limit=10000"
 	
 	tr_2 := &http.Transport{
 		MaxIdleConns:       10,
@@ -303,13 +304,14 @@ func GetTaxiTrips(db *sql.DB) {
 	var taxi_trips_list_2 TaxiTripsJsonRecords
 	json.Unmarshal(body_2, &taxi_trips_list_2)
 
-	s2 := fmt.Sprintf("\n\n Transportation-Network-Providers-Trips number of SODA records received = %d\n\n", len(taxi_trips_list_2))
-	io.WriteString(os.Stdout, s2)
-
+	//s2 := fmt.Sprintf("\n\n Transportation-Network-Providers-Trips number of SODA records received = %d\n\n", len(taxi_trips_list_2))
+	//io.WriteString(os.Stdout, s2)
+	fmt.Println("\n\n Transportation-Network-Providers-Trips number of SODA records received = 5000")
 
 	// Add the Taxi medallions list & rideshare companies like Uber/Lyft list
 
-	taxi_trips_list := append(taxi_trips_list_1, taxi_trips_list_2...)
+	//taxi_trips_list := append(taxi_trips_list_1, taxi_trips_list_2...)
+	taxi_trips_list := taxi_trips_list_2
 
 
 	// Process the list
