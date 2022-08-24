@@ -399,8 +399,8 @@ func GetTaxiTrips(db *sql.DB) {
 		dropoff_address := dropoff_address_list[0]
 		dropoff_zip_code := dropoff_address.PostalCode
 
-		if pickup_centroid_latitude == 41.9790708201 && pickup_centroid_longitude == -87.9030396611 {
-			dropoff_zip_code = 60666
+		if pickup_centroid_latitude == "41.9790708201" && pickup_centroid_longitude == "-87.9030396611" {
+			dropoff_zip_code = "60666"
 		}
 		
 		if pickup_zip_code == "" {
