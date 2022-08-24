@@ -306,7 +306,7 @@ func GetTaxiTrips(db *sql.DB) {
 
 	//s2 := fmt.Sprintf("\n\n Transportation-Network-Providers-Trips number of SODA records received = %d\n\n", len(taxi_trips_list_2))
 	//io.WriteString(os.Stdout, s2)
-	fmt.Println("\n\n Transportation-Network-Providers-Trips number of SODA records received = 500")
+	fmt.Println("\n\n Transportation-Network-Providers-Trips number of SODA records received = 5000")
 
 	// Add the Taxi medallions list & rideshare companies like Uber/Lyft list
 
@@ -383,8 +383,6 @@ func GetTaxiTrips(db *sql.DB) {
 		pickup_address_list, _ := geocoder.GeocodingReverse(pickup_location)
 		pickup_address := pickup_address_list[0]
 		pickup_zip_code := pickup_address.PostalCode
-
-		fmt.Printf("Latitude: %f Longitude: %f Address: %f \n",pickup_centroid_latitude_float,pickup_centroid_longitude_float,pickup_address)
 		
 		// Using dropoff_centroid_latitude and dropoff_centroid_longitude in geocoder.GeocodingReverse
 		// we could find the dropoff zip-code
@@ -401,6 +399,10 @@ func GetTaxiTrips(db *sql.DB) {
 		dropoff_address := dropoff_address_list[0]
 		dropoff_zip_code := dropoff_address.PostalCode
 
+		if dropoff_zip_code == "" {
+			continue
+		}
+		
 		sql := `INSERT INTO taxi_trips ("trip_id", "trip_start_timestamp", "trip_end_timestamp", "pickup_centroid_latitude", "pickup_centroid_longitude", "dropoff_centroid_latitude", "dropoff_centroid_longitude", "pickup_zip_code", 
 			"dropoff_zip_code") values($1, $2, $3, $4, $5, $6, $7, $8, $9)`
 
