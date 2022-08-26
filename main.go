@@ -98,7 +98,7 @@ func init() {
 
 	//Option 4
 	//Database application running on Google Cloud Platform.
-	db_connection := "user=postgres dbname=chicago_business_intelligence password=root host=/cloudsql/cbi-project-432:us-central1:mypostgres sslmode=disable port = 5432"
+	db_connection := "user=postgres dbname=chicago_business_intelligence password=root host=/cloudsql/spherical-arc-360622:us-central1:mypostgres sslmode=disable port = 5432"
 
 	db, err = sql.Open("postgres", db_connection)
 	if err != nil {
@@ -150,12 +150,12 @@ func main() {
 		// build and fine-tune the functions to pull data from the different data sources
 		// The following code snippets show you how to pull data from different data sources
 
-		//go GetCommunityAreaUnemployment(db)
-		//go GetBuildingPermits(db)
-		go GetTaxiTrips(db)
-		//go GetDailyCovid(db)
-		//go GetCCVIDetails(db)
-		//go GetCovidLocation(db)
+		go GetCommunityAreaUnemployment(db)
+		go GetBuildingPermits(db)
+		//go GetTaxiTrips(db)
+		go GetDailyCovid(db)
+		go GetCCVIDetails(db)
+		go GetCovidLocation(db)
 
 		http.HandleFunc("/", handler)
 
