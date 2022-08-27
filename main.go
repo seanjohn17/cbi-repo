@@ -1,7 +1,7 @@
 package main
 
 
-///////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////
 //
 // 		Chicago Business Intelligence for Strategic Planning Project
@@ -590,7 +590,8 @@ func GetBuildingPermits(db *sql.DB) {
 	// Data set has a total of about 715,000 records
 	// While doing unit-testing keep the limit value to 500
 	// later you could change it to 1000, 2000, 10,000, etc.
-	var url = "https://data.cityofchicago.org/resource/building-permits.json?$limit=10000"
+	//var url = "https://data.cityofchicago.org/resource/building-permits.json?$limit=10000"
+	var url = "https://data.cityofchicago.org/resource/building-permits.json?$limit=500"
 
 	tr := &http.Transport{
 		MaxIdleConns:       10,
@@ -934,7 +935,8 @@ func GetCovidLocation(db *sql.DB) {
 
 	// There are 7680 dates in the data set
 	// So, set limit to 8000.	
-	var url = "https://data.cityofchicago.org/resource/yhhz-zm2v.json?$limit=8000"
+	//var url = "https://data.cityofchicago.org/resource/yhhz-zm2v.json?$limit=8000"
+	var url = "https://data.cityofchicago.org/resource/yhhz-zm2v.json?$limit=500"
 
 
 	tr := &http.Transport{
