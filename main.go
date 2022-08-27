@@ -151,7 +151,7 @@ func main() {
 		// The following code snippets show you how to pull data from different data sources
 
 		//go GetCommunityAreaUnemployment(db)
-		//go GetBuildingPermits(db)
+		go GetBuildingPermits(db)
 		//go GetTaxiTrips(db)
 		//go GetDailyCovid(db)
 		//go GetCCVIDetails(db)
@@ -590,8 +590,8 @@ func GetBuildingPermits(db *sql.DB) {
 	// Data set has a total of about 715,000 records
 	// While doing unit-testing keep the limit value to 500
 	// later you could change it to 1000, 2000, 10,000, etc.
-	var url = "https://data.cityofchicago.org/resource/building-permits.json?$limit=10000"
-	//var url = "https://data.cityofchicago.org/resource/building-permits.json?$limit=500"
+	//var url = "https://data.cityofchicago.org/resource/building-permits.json?$limit=10000"
+	var url = "https://data.cityofchicago.org/resource/building-permits.json?$limit=500"
 
 	tr := &http.Transport{
 		MaxIdleConns:       10,
@@ -666,7 +666,7 @@ func GetBuildingPermits(db *sql.DB) {
 			panic(err)
 		}
 		
-		//fmt.Println("A record was entered!")
+		fmt.Println("A record was entered!")
 
 	}
 
@@ -937,8 +937,8 @@ func GetCovidLocation(db *sql.DB) {
 
 	// There are 7680 dates in the data set
 	// So, set limit to 8000.	
-	var url = "https://data.cityofchicago.org/resource/yhhz-zm2v.json?$limit=8000"
-	//var url = "https://data.cityofchicago.org/resource/yhhz-zm2v.json?$limit=500"
+	//var url = "https://data.cityofchicago.org/resource/yhhz-zm2v.json?$limit=8000"
+	var url = "https://data.cityofchicago.org/resource/yhhz-zm2v.json?$limit=500"
 
 
 	tr := &http.Transport{
@@ -1054,7 +1054,7 @@ func GetCovidLocation(db *sql.DB) {
 			panic(err)
 		}
 		
-		//fmt.Println("A record was entered!")
+		fmt.Println("A record was entered!")
 
 	}
 
