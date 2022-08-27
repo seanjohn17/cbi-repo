@@ -665,6 +665,8 @@ func GetBuildingPermits(db *sql.DB) {
 		if err != nil {
 			panic(err)
 		}
+		
+		fmt.Println("A record was entered!")
 
 	}
 
@@ -1051,6 +1053,8 @@ func GetCovidLocation(db *sql.DB) {
 		if err != nil {
 			panic(err)
 		}
+		
+		fmt.Println("A record was entered!")
 
 	}
 
